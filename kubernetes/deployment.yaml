@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nextjs-helloworld
-        image: ghcr.io/fsdaniel/nextjs-default:v0.3.4 # Update to new version tag
+        image: ghcr.io/fsdaniel/nextjs-default:v0.3.5 # Update to new version tag
         ports:
         - containerPort: 3000 # Default Next.js port
         # Add resource limits for better scheduling and stability
