@@ -10,9 +10,7 @@ spec:
     repoURL: https://github.com/fsdaniel/nextjs-default.git # Use HTTPS URL
     targetRevision: v0.3.4 # Update target revision to new tag
     path: kubernetes # Directory within the repo containing the manifests
-    # Exclude this file itself from being deployed by Argo CD
-    directory:
-      exclude: application.yaml
+
 
   destination:
     server: https://kubernetes.default.svc # Deploy to the same cluster where Argo CD is running
