@@ -142,6 +142,51 @@ Browser: ${navigator.userAgent}
     }
   };
 
+  // Add a new test function with a unique, searchable error message
+  const sendUniqueSearchableError = () => {
+    setErrorMessage('Sending unique searchable error...');
+    setDebugInfo(null);
+    
+    const uniqueId = Date.now().toString();
+    const searchableMessage = `UNIQUE_TEST_ERROR_${uniqueId}`;
+    
+    try {
+      // Use several different Sentry methods to increase chances of success
+      
+      // Method 1: captureMessage with error level
+      Sentry.captureMessage(searchableMessage, {
+        level: 'error',
+        tags: {
+          test_id: uniqueId,
+          method: 'captureMessage'
+        }
+      });
+      
+      // Method 2: captureException with Error object
+      Sentry.captureException(new Error(searchableMessage), {
+        tags: {
+          test_id: uniqueId,
+          method: 'captureException'
+        }
+      });
+      
+      // Method 3: capture with withScope
+      Sentry.withScope(scope => {
+        scope.setLevel('fatal');
+        scope.setTag('test_id', uniqueId);
+        scope.setTag('method', 'withScope');
+        Sentry.captureMessage(searchableMessage);
+      });
+      
+      setErrorMessage(`Unique error sent! Search for: ${searchableMessage}`);
+      setDebugInfo(`This error should be searchable in GlitchTip.\nThe unique ID is: ${uniqueId}`);
+    } catch (error) {
+      console.error('Error sending unique error:', error);
+      setErrorMessage('Failed to send unique error');
+      setDebugInfo(error instanceof Error ? error.message : String(error));
+    }
+  };
+
   return (
     <div className="p-4 mt-8 bg-white dark:bg-gray-800 rounded-lg shadow">
       <h2 className="text-xl font-bold mb-4">GlitchTip Testing</h2>
@@ -178,6 +223,12 @@ Browser: ${navigator.userAgent}
             Test Global Error
           </button>
         )}
+        <button 
+          onClick={sendUniqueSearchableError}
+          className="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600 transition"
+        >
+          Send Searchable Error
+        </button>
         {errorMessage && (
           <div className="mt-4 p-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded">
             {errorMessage}

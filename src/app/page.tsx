@@ -4,6 +4,7 @@ import ErrorTest from './error-test';
 import PerformanceTest from './performance-test';
 import DirectTest from './direct-test';
 import AdvancedErrorTest from './advanced-error-test';
+import DsnTest from './dsn-test';
 
 async function getVersion() {
   // Only try to read the file in production (when running in the container)
@@ -45,6 +46,9 @@ export default async function Home() {
           
           {/* Advanced Error Testing Component */}
           <AdvancedErrorTest />
+          
+          {/* DSN Test Component */}
+          <DsnTest />
           
           {/* Direct API Test Component */}
           <DirectTest />
