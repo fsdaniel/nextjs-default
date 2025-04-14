@@ -24,6 +24,9 @@ COPY . .
 # Set NEXT_TELEMETRY_DISABLED to avoid telemetry during build
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# Create the version file *before* the build
+RUN echo "$VERSION" > /app/version.txt
+
 # Build the Next.js application
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
@@ -45,6 +48,8 @@ RUN adduser --system --uid 1001 nextjs
 
 # Copy necessary files from the builder stage
 COPY --from=builder /app/public ./public
+# Explicitly copy the version file created during the build
+COPY --from=builder --chown=nextjs:nodejs /app/version.txt ./version.txt
 # Copy standalone output
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./ 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
@@ -54,14 +59,11 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 # Default port, can be overridden by PORT env var in Kubernetes
 ENV PORT 3000
-# Set the app version environment variable from the build argument
+# Set the app version environment variable from the build argument (Optional, keep if needed elsewhere)
 ENV NEXT_PUBLIC_APP_VERSION=$VERSION
 
 # Expose the port the app runs on
 EXPOSE 3000
-
-# Create a version file from the build argument
-RUN echo "$VERSION" > /app/version.txt && chown nextjs:nodejs /app/version.txt
 
 # Change ownership to non-root user
 USER nextjs
