@@ -9,10 +9,6 @@ const nextConfig = {
     // Make sure the DSN is available to the client
     NEXT_PUBLIC_SENTRY_DSN: 'https://037a152fa3d04dd486d0e93d6c6e502e@gt.bm.onlydaniel.me/1',
   },
-  // Explicitly enable Sentry
-  sentry: {
-    hideSourceMaps: false, // Expose source maps
-  },
 };
 
 // The Sentry webpack plugin configuration
@@ -47,6 +43,9 @@ const sentryNextJsOptions = {
 
   // Enable debug mode for development
   debug: true,
+
+  // Hide source maps from users
+  hideSourceMaps: true,
 };
 
 // Export the Next.js configuration with Sentry enabled

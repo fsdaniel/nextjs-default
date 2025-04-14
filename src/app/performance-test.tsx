@@ -13,7 +13,6 @@ export default function PerformanceTest() {
     const startTime = Date.now();
     
     // Simulate CPU-intensive work
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (let i = 0; i < 5000000; i++) {
       Math.sqrt(i); // Remove the result variable assignment
     }

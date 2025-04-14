@@ -4,6 +4,9 @@
 import { nodeProfilingIntegration } from '@sentry/profiling-node';
 import * as Sentry from '@sentry/nextjs';
 
+// Export hook for capturing request errors in React Server Components
+export const onRequestError = Sentry.captureRequestError;
+
 export async function register() {
   // Get DSN from environment variable
   const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN || 'https://037a152fa3d04dd486d0e93d6c6e502e@gt.bm.onlydaniel.me/1';

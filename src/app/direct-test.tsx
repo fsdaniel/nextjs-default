@@ -25,7 +25,7 @@ export default function DirectTest() {
       };
 
       // Project ID is usually the last part of the DSN URL
-      const dsn = 'https://037a152fa3d04dd486d0e93d6c6e502e@gt.bm.onlydaniel.me/1';
+      // Using DSN key directly in auth header
       const url = 'https://gt.bm.onlydaniel.me/api/1/store/';
       
       const response = await fetch(url, {

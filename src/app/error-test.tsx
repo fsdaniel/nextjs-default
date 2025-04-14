@@ -113,7 +113,7 @@ Browser: ${navigator.userAgent}
       setTimeout(() => {
         // Using non-null assertion to fix TypeScript error while still causing a runtime error
         const obj = null;
-        // @ts-ignore - Intentionally causing an error
+        // @ts-expect-error - Intentionally causing an error
         obj!.nonExistentMethod(); // This will throw a TypeError
       }, 100);
       

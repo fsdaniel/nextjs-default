@@ -23,7 +23,7 @@ export default function AdvancedErrorTest() {
     
     try {
       logMessage('Setting up custom onerror handler');
-      window.onerror = function(message, source, lineno, colno, error) {
+      window.onerror = function(message, _source, _lineno, _colno, _error) {
         logMessage(`onerror captured: ${message}`);
         return false; // Let the error propagate
       };
@@ -31,8 +31,8 @@ export default function AdvancedErrorTest() {
       // Trigger an error
       logMessage('Triggering error via syntax...');
       setTimeout(() => {
-        // @ts-ignore - Intentionally causing an error
-        const a = nonExistentVariable;
+        // @ts-expect-error - Intentionally causing an error
+        const _unused = nonExistentVariable;
       }, 10);
       
       // Restore original handler after a delay

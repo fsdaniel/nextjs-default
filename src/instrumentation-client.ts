@@ -4,6 +4,9 @@
 import * as Sentry from '@sentry/nextjs';
 import { browserTracingIntegration, replayIntegration, httpClientIntegration } from '@sentry/nextjs';
 
+// Export hook for router transitions
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+
 export function register() {
   if (typeof window !== 'undefined') {
     // Get DSN from environment variable
