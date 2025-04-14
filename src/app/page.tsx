@@ -5,6 +5,7 @@ import PerformanceTest from './performance-test';
 import DirectTest from './direct-test';
 import AdvancedErrorTest from './advanced-error-test';
 import DsnTest from './dsn-test';
+import ErrorButton from './error-button';
 
 async function getVersion() {
   // Only try to read the file in production (when running in the container)
@@ -40,6 +41,9 @@ export default async function Home() {
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
             Create, deploy, and scale your next big project with seamless workflows and powerful tools.
           </p>
+          
+          {/* Simple error button from GlitchTip docs */}
+          <ErrorButton />
           
           {/* GlitchTip Error Testing Component */}
           <ErrorTest />
