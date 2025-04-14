@@ -31,11 +31,17 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 ## Update application via tag
 
 ```bash
-git tag v0.4.0
-git push origin v0.4.0
+git tag v0.4.1
+git push origin v0.4.1
 ```
 
 ## Release Notes
+
+### v0.4.1
+- Fixed Sentry/GlitchTip integration for Next.js 14
+- Added proper instrumentation files
+- Added advanced troubleshooting tools for error tracking
+- Added direct API testing for GlitchTip
 
 ### v0.4.0
 - Added GlitchTip integration for error tracking and performance monitoring

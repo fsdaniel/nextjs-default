@@ -8,7 +8,7 @@ spec:
 
   source:
     repoURL: https://github.com/fsdaniel/nextjs-default.git # Use HTTPS URL
-    targetRevision: v0.4.0 # Updated to version 0.4.0
+    targetRevision: v0.4.1 # Updated to version 0.4.1
     path: kubernetes # Directory within the repo containing the manifests
 
 
