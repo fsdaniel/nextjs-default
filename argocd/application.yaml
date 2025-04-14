@@ -4,11 +4,11 @@ metadata:
   name: nextjs-helloworld
   namespace: argocd # Argo CD resources typically live in the 'argocd' namespace
 spec:
-  project: nextjs-helloworld # You might want to create a specific Argo CD project
+  project: default # You might want to create a specific Argo CD project
 
   source:
     repoURL: https://github.com/fsdaniel/nextjs-default.git # Use HTTPS URL
-    targetRevision: v0.3.3 # Update target revision to new tag
+    targetRevision: v0.3.4 # Update target revision to new tag
     path: kubernetes # Directory within the repo containing the manifests
     # Exclude this file itself from being deployed by Argo CD
     directory:
@@ -16,7 +16,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc # Deploy to the same cluster where Argo CD is running
-    namespace: default # Deploy the application into the 'default' namespace (must match manifests or be created)
+    namespace: nextjs-helloworld # Deploy the application into the 'nextjs-helloworld' namespace
 
   syncPolicy:
     automated:

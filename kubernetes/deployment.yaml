@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nextjs-helloworld-deployment
-  namespace: default # You might want to change this to a specific namespace
+  namespace: nextjs-helloworld # Update namespace
 spec:
   replicas: 2 # Start with 2 replicas
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nextjs-helloworld
-        image: ghcr.io/fsdaniel/nextjs-default:v0.3.3 # Update to new version tag
+        image: ghcr.io/fsdaniel/nextjs-default:v0.3.4 # Update to new version tag
         ports:
         - containerPort: 3000 # Default Next.js port
         # Add resource limits for better scheduling and stability
