@@ -56,6 +56,7 @@ export default async function Home() {
         Version: {appVersion}
       </footer>
       {/* Optional: Add more sections below */}
+      {/* Trigger rebuild for v0.3.11 */}
     </div>
   );
 }
