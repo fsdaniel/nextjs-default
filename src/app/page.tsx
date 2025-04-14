@@ -1,4 +1,28 @@
-export default function Home() {
+import { promises as fs } from 'fs';
+import path from 'path';
+
+async function getVersion() {
+  // Only try to read the file in production (when running in the container)
+  if (process.env.NODE_ENV === 'production') {
+    try {
+      // Construct the path relative to the app root
+      const versionFilePath = path.join(process.cwd(), 'version.txt');
+      const version = await fs.readFile(versionFilePath, 'utf8');
+      return version.trim();
+    } catch (error) {
+      console.error('Could not read version file:', error);
+      // Fallback if file reading fails in production
+      return 'unknown'; 
+    }
+  } else {
+    // Default for development environments
+    return 'dev';
+  }
+}
+
+export default async function Home() {
+  const appVersion = await getVersion();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 dark:from-gray-900 dark:to-blue-900 text-gray-800 dark:text-gray-100">
       <main className="container mx-auto px-6 py-20 md:py-32 flex flex-col md:flex-row items-center justify-between">
@@ -29,7 +53,7 @@ export default function Home() {
 
       </main>
       <footer className="container mx-auto px-6 py-4 text-center text-gray-500 dark:text-gray-400 text-sm">
-        Version: {process.env.NEXT_PUBLIC_APP_VERSION || 'dev'}
+        Version: {appVersion}
       </footer>
       {/* Optional: Add more sections below */}
     </div>

@@ -60,6 +60,9 @@ ENV NEXT_PUBLIC_APP_VERSION=$VERSION
 # Expose the port the app runs on
 EXPOSE 3000
 
+# Create a version file from the build argument
+RUN echo "$VERSION" > /app/version.txt && chown nextjs:nodejs /app/version.txt
+
 # Change ownership to non-root user
 USER nextjs
 
