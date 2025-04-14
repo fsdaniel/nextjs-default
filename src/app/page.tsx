@@ -2,6 +2,8 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import ErrorTest from './error-test';
 import PerformanceTest from './performance-test';
+import DirectTest from './direct-test';
+import AdvancedErrorTest from './advanced-error-test';
 
 async function getVersion() {
   // Only try to read the file in production (when running in the container)
@@ -40,6 +42,12 @@ export default async function Home() {
           
           {/* GlitchTip Error Testing Component */}
           <ErrorTest />
+          
+          {/* Advanced Error Testing Component */}
+          <AdvancedErrorTest />
+          
+          {/* Direct API Test Component */}
+          <DirectTest />
           
           {/* Performance Monitoring Component */}
           <PerformanceTest />
