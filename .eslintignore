@@ -1,0 +1,12 @@
+# Ignore generated files
+node_modules
+.next
+out
+build
+dist
+
+# Ignore testing files that intentionally create errors
+src/app/error-test.tsx
+src/app/advanced-error-test.tsx
+src/app/direct-test.tsx
+src/app/performance-test.tsx 
