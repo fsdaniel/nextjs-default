@@ -6,10 +6,17 @@ const nextConfig = {
   env: {
     // Set this to your actual GlitchTip auth token or disable source map uploading
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN || '',
+    // Make sure the DSN is available to the client
+    NEXT_PUBLIC_SENTRY_DSN: 'https://037a152fa3d04dd486d0e93d6c6e502e@gt.bm.onlydaniel.me/1',
+  },
+  // Explicitly enable Sentry
+  sentry: {
+    hideSourceMaps: false, // Expose source maps
   },
 };
 
-export default withSentryConfig(nextConfig, {
+// The Sentry webpack plugin configuration
+const sentryWebpackPluginOptions = {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
@@ -22,7 +29,10 @@ export default withSentryConfig(nextConfig, {
 
   // Auth tokens can be obtained from https://gt.bm.onlydaniel.me/settings/account/api/auth-tokens/
   authToken: process.env.SENTRY_AUTH_TOKEN,
-}, {
+};
+
+// The Next.js Sentry SDK configuration
+const sentryNextJsOptions = {
   // For all available options, see:
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
@@ -30,8 +40,14 @@ export default withSentryConfig(nextConfig, {
   widenClientFileUpload: true,
   
   // Silence the Sentry CLI Logs
-  silent: true,
+  silent: false, // Set to false for more verbose output
   
   // Disable telemetry
   telemetry: false,
-}); 
+
+  // Enable debug mode for development
+  debug: true,
+};
+
+// Export the Next.js configuration with Sentry enabled
+export default withSentryConfig(nextConfig, sentryWebpackPluginOptions, sentryNextJsOptions); 
