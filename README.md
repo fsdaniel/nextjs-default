@@ -24,6 +24,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 - https://github.com/fsdaniel/nextjs-default/
 - https://argocd.bm.onlydaniel.me/
 - https://gt.bm.onlydaniel.me/
+- https://next.bm.onlydaniel.me/
 - 76.35
 
 
