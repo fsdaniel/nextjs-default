@@ -39,8 +39,11 @@ ENV SENTRY_GIT_COMMIT_SHA=${SENTRY_GIT_COMMIT_SHA}
 # Copy all project files
 COPY . .
 
-# Install development dependencies for the build process
+# Install all dependencies, including dev dependencies for the build process
 RUN npm ci
+
+# Install missing packages specifically if needed
+RUN npm install --save tailwindcss@^3.4.1 postcss@^8.4.35 autoprefixer@^10.4.17
 
 # Build the application
 RUN npm run build
@@ -79,10 +82,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/version.txt ./version.txt
 
 # Set environment variables
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 # Default port, can be overridden by PORT env var in Kubernetes
-ENV PORT 3000
+ENV PORT=3000
 # Set the app version environment variable from the build argument
 ENV NEXT_PUBLIC_APP_VERSION=$VERSION
 
