@@ -30,6 +30,22 @@ export default function PerformanceTest() {
         },
       });
       
+      // Also send an error message since performance data is arriving
+      setTimeout(() => {
+        try {
+          Sentry.captureMessage("Test error from performance component", { 
+            level: "error",
+            tags: {
+              test_type: 'error_from_perf',
+              timestamp: Date.now().toString()
+            }
+          });
+          console.log('Error message sent from performance test');
+        } catch (e) {
+          console.error('Failed to send error from performance test:', e);
+        }
+      }, 500);
+      
       setStatus(`Performance test complete! Time: ${duration}ms`);
     }, 1000);
   };
@@ -41,7 +57,15 @@ export default function PerformanceTest() {
     // This will trigger a browser navigation performance event
     window.location.hash = Date.now().toString();
     
+    // Also send an error event on navigation
     setTimeout(() => {
+      try {
+        console.log('Sending navigation error');
+        Sentry.captureException(new Error(`Navigation error test at ${new Date().toISOString()}`));
+      } catch (e) {
+        console.error('Failed to send navigation error:', e);
+      }
+      
       setStatus('Navigation event recorded in GlitchTip');
     }, 500);
   };
@@ -55,10 +79,10 @@ export default function PerformanceTest() {
             onClick={simulateSlowOperation}
             className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition"
           >
-            Test CPU Performance
+            Test CPU Performance + Error
           </button>
           <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">
-            Simulates high CPU usage and sends metrics
+            Simulates high CPU usage and sends metrics + error
           </p>
         </div>
         
@@ -67,10 +91,10 @@ export default function PerformanceTest() {
             onClick={simulateNavigation}
             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
           >
-            Test Navigation Performance
+            Test Navigation + Error
           </button>
           <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">
-            Simulates browser navigation which is automatically tracked
+            Simulates browser navigation which is automatically tracked + sends error
           </p>
         </div>
       </div>
