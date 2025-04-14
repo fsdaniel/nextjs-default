@@ -8,8 +8,8 @@ on:
 env:
   # Use ghcr.io for GitHub Container Registry
   REGISTRY: ghcr.io
-  # Updated image name to use your actual repo path (lowercase)
-  IMAGE_NAME: ${{ secrets.GITHUB_ACTOR }}/${{ github.event.repository.name }}
+  # Use github.repository_owner for the owner part of the image name
+  IMAGE_NAME: ${{ github.repository_owner }}/${{ github.event.repository.name }}
 
 jobs:
   build-and-push:
