@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 import { withSentryConfig } from '@sentry/nextjs';
 
+// Get release information from environment variables
+const RELEASE = process.env.SENTRY_RELEASE || process.env.npm_package_version || '0.0.0';
+const COMMIT_SHA = process.env.SENTRY_GIT_COMMIT_SHA || 'unknown';
+
 const nextConfig = {
   output: 'standalone',
   // Disable eslint during build to prevent failures
@@ -13,50 +17,38 @@ const nextConfig = {
     // Only run type checking in development environment
     ignoreBuildErrors: true,
   },
+  // Make environment variables available to the client
   env: {
-    // Set this to your actual GlitchTip auth token or disable source map uploading
-    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN || '',
-    // Make sure the DSN is available to the client
-    NEXT_PUBLIC_SENTRY_DSN: 'https://037a152fa3d04dd486d0e93d6c6e502e@gt.bm.onlydaniel.me/1',
-  },
+    SENTRY_RELEASE: RELEASE,
+    SENTRY_GIT_COMMIT_SHA: COMMIT_SHA
+  }
 };
 
-// The Sentry webpack plugin configuration
+// Define Sentry webpack plugin options
 const sentryWebpackPluginOptions = {
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options
-
-  // Upload source maps to Sentry
-  org: "biedmeer",
-  project: "nextjs-default",
+  org: "bm",
+  project: "demo-helloworld",
+  sentryUrl: "https://gt.bm.onlydaniel.me/",
   
-  // Disable source map uploading if no auth token is provided
-  disableSourceMapUpload: !process.env.SENTRY_AUTH_TOKEN,
-
-  // Auth tokens can be obtained from https://gt.bm.onlydaniel.me/settings/account/api/auth-tokens/
-  authToken: process.env.SENTRY_AUTH_TOKEN,
+  // Only print logs for uploading source maps in CI
+  silent: !process.env.CI,
 };
 
-// The Next.js Sentry SDK configuration
-const sentryNextJsOptions = {
-  // For all available options, see:
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
-  // Automatically upload source maps to Sentry during build
+// Define Sentry Next.js options
+const sentryNextjsOptions = {
+  // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
   
-  // Silence the Sentry CLI Logs
-  silent: false, // Set to false for more verbose output
+  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers
+  tunnelRoute: "/monitoring",
   
-  // Disable telemetry
-  telemetry: false,
-
-  // Enable debug mode for development
-  debug: true,
-
-  // Hide source maps from users
-  hideSourceMaps: true,
+  // Automatically tree-shake Sentry logger statements to reduce bundle size
+  disableLogger: true,
 };
 
-// Export the Next.js configuration with Sentry enabled
-export default withSentryConfig(nextConfig, sentryWebpackPluginOptions, sentryNextJsOptions); 
+// Export the Next.js configuration with Sentry
+export default withSentryConfig(
+  nextConfig,
+  sentryWebpackPluginOptions,
+  sentryNextjsOptions
+);
