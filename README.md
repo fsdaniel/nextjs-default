@@ -33,8 +33,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 ## Update application via tag
 
 ```bash
-git tag v0.3.12
-git push origin v0.3.12
+git tag v0.4.0
+git push origin v0.4.0
 ```
+
+## Release Notes
+
+### v0.4.0
+- Added GlitchTip integration for error tracking and performance monitoring
+- Added error test and performance test components
+- Added global error boundary for better error handling
 
 
