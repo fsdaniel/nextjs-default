@@ -35,9 +35,6 @@ export default async function Home() {
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
             Create, deploy, and scale your next big project with seamless workflows and powerful tools.
           </p>
-          <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1">
-            Get Started
-          </button>
         </div>
 
         {/* Image/Illustration Placeholder */}
