@@ -1,4 +1,6 @@
 # Stage 1: Build the application
+# Declare build argument for version
+ARG VERSION=unknown
 FROM node:18-alpine AS builder
 
 # Set working directory
@@ -31,6 +33,8 @@ RUN \
   fi
 
 # Stage 2: Production image
+# Redeclare ARG for this stage
+ARG VERSION
 FROM node:18-alpine AS runner
 
 WORKDIR /app
@@ -50,6 +54,8 @@ ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 # Default port, can be overridden by PORT env var in Kubernetes
 ENV PORT 3000
+# Set the app version environment variable from the build argument
+ENV NEXT_PUBLIC_APP_VERSION=$VERSION
 
 # Expose the port the app runs on
 EXPOSE 3000

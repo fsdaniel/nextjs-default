@@ -8,7 +8,7 @@ spec:
 
   source:
     repoURL: https://github.com/fsdaniel/nextjs-default.git # Use HTTPS URL
-    targetRevision: v0.3.7 # Update target revision to new tag
+    targetRevision: v0.3.8 # Update target revision to new tag
     path: kubernetes # Directory within the repo containing the manifests
 
 

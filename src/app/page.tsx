@@ -28,6 +28,9 @@ export default function Home() {
         </div>
 
       </main>
+      <footer className="container mx-auto px-6 py-4 text-center text-gray-500 dark:text-gray-400 text-sm">
+        Version: {process.env.NEXT_PUBLIC_APP_VERSION || 'dev'}
+      </footer>
       {/* Optional: Add more sections below */}
     </div>
   );
