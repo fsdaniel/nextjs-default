@@ -57,6 +57,7 @@ export default async function Home() {
       </footer>
       {/* Optional: Add more sections below */}
       {/* Trigger rebuild for v0.3.11 */}
+      {/* Updated for v0.3.13 */}
     </div>
   );
 }
