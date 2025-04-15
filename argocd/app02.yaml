@@ -14,7 +14,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc # Deploy to the same cluster where Argo CD is running
-    namespace: nextjs-helloworld # Deploy the application into the 'nextjs-helloworld' namespace
+    namespace: nextjs-helloworld-02 # Deploy the application into the 'nextjs-helloworld' namespace
 
   syncPolicy:
     automated:
