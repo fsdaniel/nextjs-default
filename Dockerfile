@@ -1,7 +1,7 @@
 # Stage 1: Build the application
 # Declare build argument for version (with default)
 ARG VERSION=unknown
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS base
 
 # Set working directory
 WORKDIR /app
@@ -9,42 +9,47 @@ WORKDIR /app
 # Redeclare ARG in this stage WITHOUT default value (to preserve passed-in value)
 ARG VERSION
 
-# Install dependencies
-# Copy package.json and lock file
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-# Use the appropriate install command based on your lock file
-# Assumes npm if no lock file found
-RUN \
-  if [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable && pnpm i --frozen-lockfile; \
-  else npm i; \
-  fi
+# Install dependencies only when needed
+FROM base AS deps
 
-# Copy application code
+# Set environment variables to optimize Node
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Add necessary build tools
+RUN apk add --no-cache libc6-compat curl
+
+# Copy dependency files
+COPY package.json package-lock.json* ./
+
+# Install dependencies
+RUN npm ci --omit=dev
+
+# Add development dependencies for Sentry
+FROM deps AS builder
+
+# Sentry release and commit information
+ARG SENTRY_RELEASE=0.0.0
+ARG SENTRY_GIT_COMMIT_SHA=unknown
+
+# Set environment variables for Sentry
+ENV SENTRY_RELEASE=${SENTRY_RELEASE}
+ENV SENTRY_GIT_COMMIT_SHA=${SENTRY_GIT_COMMIT_SHA}
+
+# Copy all project files
 COPY . .
 
-# Set NEXT_TELEMETRY_DISABLED to avoid telemetry during build
-ENV NEXT_TELEMETRY_DISABLED 1
+# Install all dependencies, including dev dependencies for the build process
+RUN npm ci
 
-# Debug: Show the VERSION value
-RUN echo "VERSION in builder stage: $VERSION"
+# Install missing packages specifically if needed
+RUN npm install --save tailwindcss@^3.4.1 postcss@^8.4.35 autoprefixer@^10.4.17
 
-# Create the version file *before* the build
-RUN echo "$VERSION" > /app/version.txt
-RUN echo "Version file contents:"
-RUN cat /app/version.txt
-
-# Build the Next.js application
-RUN \
-  if [ -f yarn.lock ]; then yarn build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then pnpm run build; \
-  else npm run build; \
-  fi
+# Build the application
+RUN npm run build
 
 # Stage 2: Production image
-FROM node:18-alpine AS runner
+FROM base AS runner
 
 WORKDIR /app
 
@@ -58,22 +63,29 @@ RUN echo "VERSION in runner stage: $VERSION"
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy necessary files from the builder stage
-COPY --from=builder /app/public ./public
-# Explicitly copy the version file created during the build
-COPY --from=builder --chown=nextjs:nodejs /app/version.txt ./version.txt
-# Show the contents of the version file after copying
-RUN echo "Version file contents after copy:"
-RUN cat /app/version.txt
-# Copy standalone output
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./ 
+# Set the correct permissions
+RUN mkdir -p /app/.next/standalone /app/.next/static /app/public \
+    && chown -R nextjs:nodejs /app
+
+# Sentry release and commit information
+ARG SENTRY_RELEASE=0.0.0
+ARG SENTRY_GIT_COMMIT_SHA=unknown
+
+# Set environment variables for Sentry
+ENV SENTRY_RELEASE=${SENTRY_RELEASE}
+ENV SENTRY_GIT_COMMIT_SHA=${SENTRY_GIT_COMMIT_SHA}
+
+# Copy built application from builder stage
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/version.txt ./version.txt
 
 # Set environment variables
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 # Default port, can be overridden by PORT env var in Kubernetes
-ENV PORT 3000
+ENV PORT=3000
 # Set the app version environment variable from the build argument
 ENV NEXT_PUBLIC_APP_VERSION=$VERSION
 

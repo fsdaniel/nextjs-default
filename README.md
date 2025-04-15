@@ -20,21 +20,32 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font).
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Handy urls
+- https://github.com/fsdaniel/nextjs-default/
+- https://argocd.bm.onlydaniel.me/
+- https://gt.bm.onlydaniel.me/
+- https://next.bm.onlydaniel.me/
+- 76.35
 
 
 ## Update application via tag
 
 ```bash
-git tag v0.3.12
-git push origin v0.3.12
+git tag v0.4.1
+git push origin v0.4.1
 ```
+
+## Release Notes
+
+### v0.4.1
+- Fixed Sentry/GlitchTip integration for Next.js 14
+- Added proper instrumentation files
+- Added advanced troubleshooting tools for error tracking
+- Added direct API testing for GlitchTip
+
+### v0.4.0
+- Added GlitchTip integration for error tracking and performance monitoring
+- Added error test and performance test components
+- Added global error boundary for better error handling
 
 
