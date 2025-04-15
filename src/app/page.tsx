@@ -30,7 +30,7 @@ export default async function Home() {
         {/* Text Content */}
         <div className="md:w-1/2 text-center md:text-left mb-12 md:mb-0">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4 bg-gradient-to-r from-blue-600 to-teal-400 dark:from-blue-400 dark:to-teal-300 bg-clip-text text-transparent">
-            Ignite Your Ideas
+            Ignite Your Garbage
           </h1>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
             Create, deploy, and scale your next big project with seamless workflows and powerful tools.
