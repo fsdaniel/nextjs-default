@@ -33,8 +33,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 ## Update application via tag
 
 ```bash
-git tag v0.3.12
-git push origin v0.3.12
+git tag v0.7.1
+git push origin v0.7.1
 ```
 
 

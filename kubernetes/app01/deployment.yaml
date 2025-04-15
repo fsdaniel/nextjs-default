@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextjs-helloworld-deployment
+  namespace: nextjs-helloworld-01 # Update namespace
+spec:
+  replicas: 2 # Start with 2 replicas
+  selector:
+    matchLabels:
+      app: nextjs-helloworld
+  template:
+    metadata:
+      labels:
+        app: nextjs-helloworld
+    spec:
+      containers:
+      - name: nextjs-helloworld
+        image: ghcr.io/fsdaniel/nextjs-default:v0.7.0 # Update to new version tag
+        ports:
+        - containerPort: 3000 # Default Next.js port
+        # Add resource limits for better scheduling and stability
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        # Add readiness and liveness probes for better health checking
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20 
