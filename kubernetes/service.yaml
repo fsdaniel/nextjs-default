@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nextjs-helloworld-service
-  namespace: nextjs-helloworld-01 # Update namespace
+  namespace: nextjs-helloworld # Update namespace
 spec:
   selector:
     app: nextjs-helloworld # Selects pods with this label

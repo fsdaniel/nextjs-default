@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nextjs-helloworld-ingress
-  namespace: nextjs-helloworld-01 # Update namespace
+  namespace: nextjs-helloworld # Update namespace
   annotations:
     # Add any necessary annotations for your specific ingress controller
     # Example for Nginx Ingress:
